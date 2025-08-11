@@ -1,0 +1,8 @@
+# Made in Blockbench 4.12.4
+newmtl m_f10f01f8-c0b6-7e20-ec05-5259afd02a90
+map_Kd diginHead.png
+newmtl m_636f74a2-89c7-1770-cb3d-1dc42be1b0e7
+map_Kd diginBody.png
+newmtl m_40cb975c-3fd4-2e1b-d9f0-e8d9aeca94ae
+map_Kd diginFoot.png
+newmtl none

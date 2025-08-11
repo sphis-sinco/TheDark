@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://dm0lxgqk3kta3"]
+
+[ext_resource type="Shader" uid="uid://14kwsffexvht" path="res://dithering.gdshader" id="1_cciee"]
+[ext_resource type="PackedScene" uid="uid://5w15j2eyohmf" path="res://digin.gltf" id="2_oftay"]
+[ext_resource type="Shader" uid="uid://yonbjk1ckqp8" path="res://posterization.gdshader" id="3_26x5l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ghv30"]
+shader = ExtResource("1_cciee")
+shader_parameter/SCREEN_WIDTH = 1280.0
+shader_parameter/COLOR_FACTOR = 10.0
+shader_parameter/DITHERING_STRENTH = 0.01
+
+[sub_resource type="QuadMesh" id="QuadMesh_ghv30"]
+size = Vector2(1280, 720)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uu3nl"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_urp1e"]
+albedo_color = Color(0.35, 0.204167, 0, 1)
+
+[sub_resource type="Environment" id="Environment_6trty"]
+fog_enabled = true
+fog_light_color = Color(0, 1, 0, 1)
+fog_light_energy = 0.2
+fog_height_density = 0.2
+volumetric_fog_density = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urp1e"]
+shader = ExtResource("3_26x5l")
+shader_parameter/SCREEN_WIDTH = 1920.0
+shader_parameter/RED_COMPONENT = 7.0
+shader_parameter/GREEN_COMPONENT = 7.0
+shader_parameter/BLUE_COMPONENT = 7.0
+
+[node name="Idle" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="SubViewportContainer"]
+material = SubResource("ShaderMaterial_ghv30")
+position = Vector2(640, 360)
+mesh = SubResource("QuadMesh_ghv30")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+size = Vector2i(1280, 720)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
+flip_faces = true
+size = Vector3(5, 2, 5)
+material = SubResource("StandardMaterial3D_uu3nl")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.746657, -0.541882, 0)
+size = Vector3(1, 1, 2)
+material = SubResource("StandardMaterial3D_urp1e")
+
+[node name="digin" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_oftay")]
+transform = Transform3D(0.871274, 0, -0.490797, 0, 1, 0, 0.490797, 0, 0.871274, 1.40082, -0.391781, 0)
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 0.25, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_6trty")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewportContainer/SubViewport"]
+material = SubResource("ShaderMaterial_urp1e")
+position = Vector2(640, 360)
+mesh = SubResource("QuadMesh_ghv30")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(0.979216, -8.86561e-09, 0.202821, -0.202821, -4.28029e-08, 0.979216, 0, -1, -4.37114e-08, -0.603625, 1.79789, 0)
+light_energy = 16.0
+spot_range = 4096.0
+spot_attenuation = 0.0
+spot_angle_attenuation = 25.0
